@@ -5,6 +5,8 @@ import './App.css'
 import Titulo from './components/Titulo';
 import Parrafo from './components/Parrafo';
 import Imagen from './components/Imagen';
+import Contador from './components/contador';
+import ImagenAl from './components/imgAl';
 
 function App() {
   return (
@@ -23,8 +25,11 @@ function App() {
         src={reactLogo} 
         alt="Logo de React" 
         ancho="w-32"/>
+        <Contador />
+        <ImagenAl/>
     </div>
   );
 }
 
 export default App;
+
