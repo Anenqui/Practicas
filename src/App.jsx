@@ -7,6 +7,10 @@ import Parrafo from './components/Parrafo';
 import Imagen from './components/Imagen';
 import Contador from './components/contador';
 import ImagenAl from './components/imgAl';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import BotonA from './components/botonAzul';
+import ModalA from './components/Modal';
+import CarouselA from './components/carousel';
 
 function App() {
   return (
@@ -27,6 +31,9 @@ function App() {
         ancho="w-32"/>
         <Contador />
         <ImagenAl/>
+        <BotonA/>
+        <ModalA />
+        <CarouselA />
     </div>
   );
 }
