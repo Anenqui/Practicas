@@ -11,6 +11,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import BotonA from './components/botonAzul';
 import ModalA from './components/Modal';
 import CarouselA from './components/carousel';
+import TablaI from './components/Tabla';
+
 
 function App() {
   return (
@@ -34,6 +36,7 @@ function App() {
         <BotonA/>
         <ModalA />
         <CarouselA />
+        <TablaI />
     </div>
   );
 }
