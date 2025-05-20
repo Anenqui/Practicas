@@ -10,7 +10,8 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter
+  ModalFooter,
+  FormFeedback
 } from 'reactstrap';
 import Titulo from '../components/Titulo';
 
@@ -26,21 +27,19 @@ const FormularioRegistro = () => {
     opciones: {
       casado: false,
       discapacitado: false,
-      extranjero: false
-    },
+      extranjero: false},
     notas: '',
-    fechaRegistro: ''
-  });
+    fechaRegistro: ''});
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [touched, setTouched] = useState({});
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  };
+      [name]: type === 'checkbox' ? checked : value}));
+    setTouched((prev) => ({ ...prev, [name]: true }));};
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
@@ -49,9 +48,7 @@ const FormularioRegistro = () => {
       opciones: {
         ...prev.opciones,
         [name]: checked
-      }
-    }));
-  };
+      }}));};
 
   const handleReset = () => {
     setForm({
@@ -65,11 +62,20 @@ const FormularioRegistro = () => {
       opciones: {
         casado: false,
         discapacitado: false,
-        extranjero: false
-      },
+        extranjero: false},
       notas: '',
-      fechaRegistro: ''
-    });
+      fechaRegistro: ''});
+    setTouched({});};
+
+  // Validaciones
+  const validarNombre = (nombre) => /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombre);
+  const validarApellido = (apellido) => /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(apellido);
+  const validarEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validarEdad = (edad) => /^\d+$/.test(edad) && parseInt(edad) > 0 && parseInt(edad) <= 100;
+  const validarFecha = (fecha) => {
+    if (!fecha) return false;
+    const hoy = new Date().toISOString().split('T')[0];
+    return fecha >= hoy;
   };
 
   return (
@@ -92,7 +98,9 @@ const FormularioRegistro = () => {
                 placeholder="Ingresa tu nombre"
                 value={form.nombre}
                 onChange={handleChange}
-              />
+                valid={touched.nombre && validarNombre(form.nombre)}
+                invalid={touched.nombre && !validarNombre(form.nombre)}/>
+              <FormFeedback>Este campo solo acepta letras.</FormFeedback>
             </FormGroup>
           </Col>
           <Col md={6}>
@@ -105,7 +113,10 @@ const FormularioRegistro = () => {
                 placeholder="Ingresa tu apellido"
                 value={form.apellido}
                 onChange={handleChange}
+                valid={touched.apellido && validarApellido(form.apellido)}
+                invalid={touched.apellido && !validarApellido(form.apellido)}
               />
+              <FormFeedback>Este campo solo acepta letras.</FormFeedback>
             </FormGroup>
           </Col>
         </Row>
@@ -119,7 +130,9 @@ const FormularioRegistro = () => {
             placeholder="correo@example.com"
             value={form.email}
             onChange={handleChange}
-          />
+            valid={touched.email && validarEmail(form.email)}
+            invalid={touched.email && !validarEmail(form.email)}/>
+          <FormFeedback>Debe tener formato de correo electrónico.</FormFeedback>
         </FormGroup>
 
         <FormGroup>
@@ -142,7 +155,9 @@ const FormularioRegistro = () => {
             id="edad"
             value={form.edad}
             onChange={handleChange}
-          />
+            valid={touched.edad && validarEdad(form.edad)}
+            invalid={touched.edad && !validarEdad(form.edad)}/>
+          <FormFeedback>Solo acepta números positivos hasta 100.</FormFeedback>
         </FormGroup>
 
         <FormGroup tag="fieldset">
@@ -153,8 +168,7 @@ const FormularioRegistro = () => {
               name="genero"
               value="masculino"
               checked={form.genero === 'masculino'}
-              onChange={handleChange}
-            />
+              onChange={handleChange}/>
             <Label check>Masculino</Label>
           </FormGroup>
           <FormGroup check>
@@ -176,8 +190,7 @@ const FormularioRegistro = () => {
             name="rol"
             id="rol"
             value={form.rol}
-            onChange={handleChange}
-          >
+            onChange={handleChange}>
             <option value="">Selecciona un rol</option>
             <option value="admin">Administrador</option>
             <option value="user">Usuario</option>
@@ -237,7 +250,10 @@ const FormularioRegistro = () => {
             id="fechaRegistro"
             value={form.fechaRegistro}
             onChange={handleChange}
+            valid={touched.fechaRegistro && validarFecha(form.fechaRegistro)}
+            invalid={touched.fechaRegistro && !validarFecha(form.fechaRegistro)}
           />
+          <FormFeedback>La fecha debe ser a partir del día actual.</FormFeedback>
         </FormGroup>
 
         <div className="mt-4 d-flex gap-3">
