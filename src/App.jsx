@@ -1,45 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Titulo from './components/Titulo';
-import Parrafo from './components/Parrafo';
-import Imagen from './components/Imagen';
-import Contador from './components/contador';
-import ImagenAl from './components/imgAl';
+import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import BotonA from './components/botonAzul';
-import ModalA from './components/Modal';
-import CarouselA from './components/carousel';
-import TablaI from './components/Tabla';
+import Pagina1 from './views/pagina1';
+import { Navbar } from './navbar';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import FormularioRegistro from './views/formulario';
 
 
 function App() {
   return (
-    <div>
-      <Titulo   
-      texto="Hola mundo" 
-      fuente="font-serif" 
-      tamaño="text-4xl" 
-      color="text-red-500"/>
-      <Parrafo  
-        contenido="Este es un párrafo" 
-        fuente="font-mono" 
-        tamaño="text-lg" 
-        color="text-blue-600"/>
-      <Imagen
-        src={reactLogo} 
-        alt="Logo de React" 
-        ancho="w-32"/>
-        <Contador />
-        <ImagenAl/>
-        <BotonA/>
-        <ModalA />
-        <CarouselA />
-        <TablaI />
-    </div>
+    <Router>
+      <Navbar />
+      <div style={{ padding: 20 }}>
+        <Routes>
+          <Route path="/" element={<Pagina1 />} />
+          <Route path="/registro" element={<FormularioRegistro />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
 export default App;
-
