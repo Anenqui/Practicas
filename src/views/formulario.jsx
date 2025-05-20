@@ -83,9 +83,7 @@ const handleActualizarRegistro = () => {
       setValidacion((prev) => ({
         ...prev,
         [name]: validarCampo(name, nuevoValor)
-      }));
-    }
-  };
+      }));}};
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
@@ -143,9 +141,7 @@ const handleActualizarRegistro = () => {
         texto="Formulario de Registro"
         fuente="font-sans"
         tamaño="text-3xl"
-        color="text-indigo-600"
-      />
-
+        color="text-indigo-600"/>
       <Form>
         <Row>
           <Col md={6}>

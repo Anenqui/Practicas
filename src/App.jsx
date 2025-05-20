@@ -5,7 +5,7 @@ import { Navbar } from './navbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import FormularioRegistro from './views/formulario';
 import Consulta from './views/consultas';
-
+import Cervesas from './views/cervesas';
 
 function App() {
   return (
@@ -16,6 +16,7 @@ function App() {
           <Route path="/" element={<Pagina1 />} />
           <Route path="/registro" element={<FormularioRegistro />} />
           <Route path="/consulta" element={<Consulta />} />
+          <Route path="/cervesas" element={<Cervesas />} />
         </Routes>
       </div>
     </Router>

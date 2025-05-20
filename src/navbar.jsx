@@ -13,7 +13,7 @@ export const Navbar = () => {
         <Link
           to="/"
           className={`hover:underline font-semibold ${
-            isActive('/') ? 'underline' : ''
+            isActive('/Activides') ? 'underline' : ''
           }`}>
           Tarea 1/2
         </Link>
@@ -29,7 +29,14 @@ export const Navbar = () => {
           className={`hover:underline font-semibold ${
             isActive('/Consultas') ? 'underline' : ''
           }`}>
-            Tarea 5
+            Tarea 5.1
+          </Link>
+          <Link
+          to="/cervesas"
+          className={`hover:underline font-semibold ${
+            isActive('/Cervesas') ? 'underline' : ''
+          }`}>
+            Tarea 5.2
           </Link>
       </div>
     </nav>
