@@ -4,6 +4,7 @@ import Pagina1 from './views/pagina1';
 import { Navbar } from './navbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import FormularioRegistro from './views/formulario';
+import Consulta from './views/consultas';
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Pagina1 />} />
           <Route path="/registro" element={<FormularioRegistro />} />
+          <Route path="/consulta" element={<Consulta />} />
         </Routes>
       </div>
     </Router>
