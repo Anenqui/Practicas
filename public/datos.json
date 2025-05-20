@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "nombre": "Juan Pérez",
+    "puesto": "Desarrollador",
+    "icono": "fa-code",
+    "imagen": "https://picsum.photos/id/1/400/300"
+  },
+  {
+    "id": 2,
+    "nombre": "Ana López",
+    "puesto": "Diseñadora",
+    "icono": "fa-paint-brush",
+    "imagen": "https://picsum.photos/id/2/400/300"
+  },
+  {
+    "id": 3,
+    "nombre": "Carlos Ruiz",
+    "puesto": "Tester",
+    "icono": "fa-bug",
+    "imagen": "https://picsum.photos/id/3/400/300"
+  },
+  {
+    "id": 4,
+    "nombre": "Laura Méndez",
+    "puesto": "Analista",
+    "icono": "fa-chart-line",
+    "imagen": "https://picsum.photos/id/4/400/300"
+  },
+  {
+    "id": 5,
+    "nombre": "Pedro García",
+    "puesto": "Administrador de BD",
+    "icono": "fa-database",
+    "imagen": "https://picsum.photos/id/5/400/300"
+  },
+  {
+    "id": 6,
+    "nombre": "Sofía Ramírez",
+    "puesto": "Scrum Master",
+    "icono": "fa-cogs",
+    "imagen": "https://picsum.photos/id/6/400/300"
+  },
+  {
+    "id": 7,
+    "nombre": "Luis Torres",
+    "puesto": "Arquitecto de Software",
+    "icono": "fa-code",
+    "imagen": "https://picsum.photos/id/7/400/300"
+  },
+  {
+    "id": 8,
+    "nombre": "Carla Jiménez",
+    "puesto": "Diseñadora UX",
+    "icono": "fa-paint-brush",
+    "imagen": "https://picsum.photos/id/8/400/300"
+  },
+  {
+    "id": 9,
+    "nombre": "José Morales",
+    "puesto": "Tester QA",
+    "icono": "fa-bug",
+    "imagen": "https://picsum.photos/id/9/400/300"
+  },
+  {
+    "id": 10,
+    "nombre": "Daniela Soto",
+    "puesto": "Analista de Datos",
+    "icono": "fa-chart-line",
+    "imagen": "https://picsum.photos/id/10/400/300"
+  },
+  {
+    "id": 11,
+    "nombre": "Miguel Navarro",
+    "puesto": "Administrador de BD",
+    "icono": "fa-database",
+    "imagen": "https://picsum.photos/id/11/400/300"
+  },
+  {
+    "id": 12,
+    "nombre": "Valeria Ortega",
+    "puesto": "Project Manager",
+    "icono": "fa-cogs",
+    "imagen": "https://picsum.photos/id/12/400/300"
+  },
+  {
+    "id": 13,
+    "nombre": "Ricardo Blanco",
+    "puesto": "Desarrollador",
+    "icono": "fa-code",
+    "imagen": "https://picsum.photos/id/13/400/300"
+  },
+  {
+    "id": 14,
+    "nombre": "Patricia Salas",
+    "puesto": "Diseñadora Gráfica",
+    "icono": "fa-paint-brush",
+    "imagen": "https://picsum.photos/id/14/400/300"
+  },
+  {
+    "id": 15,
+    "nombre": "Fernando Díaz",
+    "puesto": "Tester Manual",
+    "icono": "fa-bug",
+    "imagen": "https://picsum.photos/id/15/400/300"
+  },
+  {
+    "id": 16,
+    "nombre": "Isabel Mendoza",
+    "puesto": "Analista de Negocio",
+    "icono": "fa-chart-line",
+    "imagen": "https://picsum.photos/id/16/400/"
+  },
+  {
+    "id": 17,
+    "nombre": "Alejandro Flores",
+    "puesto": "DBA",
+    "icono": "fa-database",
+    "imagen": "https://picsum.photos/id/17/400/"
+  },
+  {
+    "id": 18,
+    "nombre": "Camila Rojas",
+    "puesto": "Líder Técnico",
+    "icono": "fa-cogs",
+    "imagen": "https://picsum.photos/id/18/400/300"
+  },
+  {
+    "id": 19,
+    "nombre": "Jorge Silva",
+    "puesto": "Full Stack Developer",
+    "icono": "fa-code",
+    "imagen": "https://picsum.photos/id/19/400/300"
+  },
+  {
+    "id": 20,
+    "nombre": "Lucía Herrera",
+    "puesto": "Diseñadora UI",
+    "icono": "fa-paint-brush",
+    "imagen": "https://picsum.photos/id/20/400/300"
+  }
+]
