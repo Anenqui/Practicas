@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
 import {
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Button,
-  Row,
-  Col,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  FormFeedback
+  Form, FormGroup, Label, Input, Button, Row, Col,
+  Modal, ModalHeader, ModalBody, ModalFooter, Table, FormFeedback
 } from 'reactstrap';
 import Titulo from '../components/Titulo';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash,faEdit  } from '@fortawesome/free-solid-svg-icons';
+
 
 const FormularioRegistro = () => {
   const [form, setForm] = useState({
@@ -27,19 +21,71 @@ const FormularioRegistro = () => {
     opciones: {
       casado: false,
       discapacitado: false,
-      extranjero: false},
+      extranjero: false
+    },
     notas: '',
-    fechaRegistro: ''});
+    fechaRegistro: ''
+  });
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [touched, setTouched] = useState({});
+const [validacion, setValidacion] = useState({});
+const [registros, setRegistros] = useState([]);
+const [modalOpen, setModalOpen] = useState(false);
+const [modalEditarOpen, setModalEditarOpen] = useState(false);
+const [registroEditar, setRegistroEditar] = useState({});
+const [indiceEditar, setIndiceEditar] = useState(null);
+
+  const abrirModalEditar = (index) => {
+  setRegistroEditar(registros[index]);
+  setIndiceEditar(index);
+  setModalEditarOpen(true);
+};
+const handleActualizarRegistro = () => {
+  const nuevosRegistros = [...registros];
+  nuevosRegistros[indiceEditar] = registroEditar;
+  setRegistros(nuevosRegistros);
+  setModalEditarOpen(false);
+};
+
+
+  const hoy = new Date().toISOString().split('T')[0];
+
+  const validarCampo = (nombre, valor) => {
+    switch (nombre) {
+      case 'nombre':
+      case 'apellido':
+        return /^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+$/.test(valor);
+      case 'email':
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor);
+      case 'edad':
+        return /^[1-9][0-9]?$|^100$/.test(valor);
+      case 'fechaRegistro':
+        return valor >= hoy;
+      default:
+        return true;
+    }
+  };
+
+  const handleEliminarRegistro = (index) => {
+  const nuevosRegistros = registros.filter((_, i) => i !== index);
+  setRegistros(nuevosRegistros);
+    };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    const nuevoValor = type === 'checkbox' ? checked : value;
+
     setForm((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value}));
-    setTouched((prev) => ({ ...prev, [name]: true }));};
+      [name]: nuevoValor
+    }));
+
+    if (name in validacion) {
+      setValidacion((prev) => ({
+        ...prev,
+        [name]: validarCampo(name, nuevoValor)
+      }));
+    }
+  };
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
@@ -48,7 +94,9 @@ const FormularioRegistro = () => {
       opciones: {
         ...prev.opciones,
         [name]: checked
-      }}));};
+      }
+    }));
+  };
 
   const handleReset = () => {
     setForm({
@@ -62,20 +110,31 @@ const FormularioRegistro = () => {
       opciones: {
         casado: false,
         discapacitado: false,
-        extranjero: false},
+        extranjero: false
+      },
       notas: '',
-      fechaRegistro: ''});
-    setTouched({});};
+      fechaRegistro: ''
+    });
+    setValidacion({});
+  };
 
-  // Validaciones
-  const validarNombre = (nombre) => /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombre);
-  const validarApellido = (apellido) => /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(apellido);
-  const validarEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validarEdad = (edad) => /^\d+$/.test(edad) && parseInt(edad) > 0 && parseInt(edad) <= 100;
-  const validarFecha = (fecha) => {
-    if (!fecha) return false;
-    const hoy = new Date().toISOString().split('T')[0];
-    return fecha >= hoy;
+  const handleGuardar = () => {
+    const campos = ['nombre', 'apellido', 'email', 'edad', 'fechaRegistro'];
+    const nuevaValidacion = {};
+    let esValido = true;
+
+    campos.forEach((campo) => {
+      const valido = validarCampo(campo, form[campo]);
+      nuevaValidacion[campo] = valido;
+      if (!valido) esValido = false;
+    });
+
+    setValidacion(nuevaValidacion);
+
+    if (esValido) {
+      setRegistros((prev) => [...prev, form]);
+      handleReset();
+    }
   };
 
   return (
@@ -86,6 +145,7 @@ const FormularioRegistro = () => {
         tamaño="text-3xl"
         color="text-indigo-600"
       />
+
       <Form>
         <Row>
           <Col md={6}>
@@ -98,8 +158,9 @@ const FormularioRegistro = () => {
                 placeholder="Ingresa tu nombre"
                 value={form.nombre}
                 onChange={handleChange}
-                valid={touched.nombre && validarNombre(form.nombre)}
-                invalid={touched.nombre && !validarNombre(form.nombre)}/>
+                valid={validacion.nombre === true}
+                invalid={validacion.nombre === false}
+              />
               <FormFeedback>Este campo solo acepta letras.</FormFeedback>
             </FormGroup>
           </Col>
@@ -113,8 +174,8 @@ const FormularioRegistro = () => {
                 placeholder="Ingresa tu apellido"
                 value={form.apellido}
                 onChange={handleChange}
-                valid={touched.apellido && validarApellido(form.apellido)}
-                invalid={touched.apellido && !validarApellido(form.apellido)}
+                valid={validacion.apellido === true}
+                invalid={validacion.apellido === false}
               />
               <FormFeedback>Este campo solo acepta letras.</FormFeedback>
             </FormGroup>
@@ -130,9 +191,10 @@ const FormularioRegistro = () => {
             placeholder="correo@example.com"
             value={form.email}
             onChange={handleChange}
-            valid={touched.email && validarEmail(form.email)}
-            invalid={touched.email && !validarEmail(form.email)}/>
-          <FormFeedback>Debe tener formato de correo electrónico.</FormFeedback>
+            valid={validacion.email === true}
+            invalid={validacion.email === false}
+          />
+          <FormFeedback>Debe tener formato de correo electrónico válido.</FormFeedback>
         </FormGroup>
 
         <FormGroup>
@@ -155,9 +217,10 @@ const FormularioRegistro = () => {
             id="edad"
             value={form.edad}
             onChange={handleChange}
-            valid={touched.edad && validarEdad(form.edad)}
-            invalid={touched.edad && !validarEdad(form.edad)}/>
-          <FormFeedback>Solo acepta números positivos hasta 100.</FormFeedback>
+            valid={validacion.edad === true}
+            invalid={validacion.edad === false}
+          />
+          <FormFeedback>Solo se permiten números entre 1 y 100.</FormFeedback>
         </FormGroup>
 
         <FormGroup tag="fieldset">
@@ -168,7 +231,8 @@ const FormularioRegistro = () => {
               name="genero"
               value="masculino"
               checked={form.genero === 'masculino'}
-              onChange={handleChange}/>
+              onChange={handleChange}
+            />
             <Label check>Masculino</Label>
           </FormGroup>
           <FormGroup check>
@@ -190,7 +254,8 @@ const FormularioRegistro = () => {
             name="rol"
             id="rol"
             value={form.rol}
-            onChange={handleChange}>
+            onChange={handleChange}
+          >
             <option value="">Selecciona un rol</option>
             <option value="admin">Administrador</option>
             <option value="user">Usuario</option>
@@ -249,20 +314,64 @@ const FormularioRegistro = () => {
             name="fechaRegistro"
             id="fechaRegistro"
             value={form.fechaRegistro}
+            min={hoy}
             onChange={handleChange}
-            valid={touched.fechaRegistro && validarFecha(form.fechaRegistro)}
-            invalid={touched.fechaRegistro && !validarFecha(form.fechaRegistro)}
+            valid={validacion.fechaRegistro === true}
+            invalid={validacion.fechaRegistro === false}
           />
-          <FormFeedback>La fecha debe ser a partir del día actual.</FormFeedback>
+          <FormFeedback>Solo se aceptan fechas a partir de hoy.</FormFeedback>
         </FormGroup>
 
         <div className="mt-4 d-flex gap-3">
-          <Button color="primary" onClick={() => setModalOpen(true)}>Mostrar</Button>
+          <Button color="success" onClick={handleGuardar}>Guardar</Button>
           <Button color="secondary" onClick={handleReset}>Reiniciar</Button>
+          <Button color="info" onClick={() => setModalOpen(true)}>Mostrar Modal</Button>
         </div>
       </Form>
 
-      {/* Modal de datos */}
+      {/* Tabla  */}
+        {registros.length > 0 && (
+        <div className="mt-5">
+            <h4>Registros</h4>
+            <Table striped>
+            <thead>
+                <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Edad</th>
+                <th>Género</th>
+                <th>Rol</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {registros.map((reg, index) => (
+                <tr key={index}>
+                    <td>{reg.nombre}</td>
+                    <td>{reg.apellido}</td>
+                    <td>{reg.email}</td>
+                    <td>{reg.edad}</td>
+                    <td>{reg.genero}</td>
+                    <td>{reg.rol}</td>
+                    <td>{reg.fechaRegistro}</td>
+                    <td>
+                        <Button color="warning"size="sm"className="me-2"onClick={() => abrirModalEditar(index)}>
+                        <FontAwesomeIcon icon={faEdit} />
+                        </Button>
+                    <Button color="danger" size="sm" onClick={() => handleEliminarRegistro(index)}>
+                        <FontAwesomeIcon icon={faTrash} />
+                    </Button>
+                    </td>
+                </tr>
+                ))}
+            </tbody>
+            </Table>
+        </div>
+        )}
+
+      {/* Modal */}
       <Modal isOpen={modalOpen} toggle={() => setModalOpen(!modalOpen)}>
         <ModalHeader toggle={() => setModalOpen(!modalOpen)}>Datos del Formulario</ModalHeader>
         <ModalBody>
@@ -280,6 +389,62 @@ const FormularioRegistro = () => {
           <Button color="secondary" onClick={() => setModalOpen(false)}>Cerrar</Button>
         </ModalFooter>
       </Modal>
+
+      {/* Modal  pero de la edicion*/}
+      <Modal isOpen={modalEditarOpen} toggle={() => setModalEditarOpen(false)}>
+        <ModalHeader toggle={() => setModalEditarOpen(false)}>Editar Registro</ModalHeader>
+        <ModalBody>
+            <FormGroup>
+            <Label for="nombreEditar">Nombre</Label>
+            <Input
+                id="nombreEditar"
+                name="nombre"
+                value={registroEditar.nombre || ''}
+                onChange={(e) =>
+                setRegistroEditar({ ...registroEditar, nombre: e.target.value })
+                }/>
+            </FormGroup>
+            <FormGroup>
+            <Label for="apellidoEditar">Apellido</Label>
+            <Input
+                id="apellidoEditar"
+                name="apellido"
+                value={registroEditar.apellido || ''}
+                onChange={(e) =>
+                setRegistroEditar({ ...registroEditar, apellido: e.target.value })
+                }/>
+            </FormGroup>
+            <FormGroup>
+            <Label for="edadEditar">Edad</Label>
+            <Input
+                id="edadEditar"
+                name="edad"
+                value={registroEditar.edad || ''}
+                onChange={(e) =>
+                setRegistroEditar({ ...registroEditar, edad: e.target.value })
+                }/>
+            </FormGroup>
+            <FormGroup>
+            <Label for="emailEditar">Email</Label>
+            <Input
+                id="emailEditar"
+                name="email"
+                value={registroEditar.email || ''}
+                onChange={(e) =>
+                setRegistroEditar({ ...registroEditar, email: e.target.value })
+                }/>
+            </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+            <Button color="primary" onClick={handleActualizarRegistro}>
+            Guardar Cambios
+            </Button>
+            <Button color="secondary" onClick={() => setModalEditarOpen(false)}>
+            Cancelar
+            </Button>
+        </ModalFooter>
+        </Modal>
+
     </div>
   );
 };
