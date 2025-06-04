@@ -6,17 +6,17 @@ import {
   Container
 } from 'reactstrap';
 
-const Cervesas = () => {
-  const [cervezas, setCervezas] = useState([]);
+const Usuarios = () => {
+  const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const obtenerCervezas = async () => {
+  const obtenerUsuarios = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://random-data-api.com/api/v2/beers?size=15');
-      if (!response.ok) throw new Error('Error al obtener cervezas');
+      const response = await fetch('https://randomuser.me/api/?results=15');
+      if (!response.ok) throw new Error('Error al obtener usuarios');
       const data = await response.json();
-      setCervezas(data);
+      setUsuarios(data.results);
     } catch (error) {
       console.error('Error:', error);
     } finally {
@@ -25,48 +25,52 @@ const Cervesas = () => {
   };
 
   useEffect(() => {
-    obtenerCervezas();
+    obtenerUsuarios();
   }, []);
 
   return (
     <Container className="mt-4">
-      <h2 className="mb-3 text-center">Lista de Cervesas</h2>
+      <h2 className="mb-3 text-center">Lista de Usuarios</h2>
       <div className="text-center mb-3">
-        <Button color="primary" onClick={obtenerCervezas}>
-          {loading ? <Spinner size="sm" /> : 'Cargar otras 15 cervesas'}
+        <Button color="primary" onClick={obtenerUsuarios}>
+          {loading ? <Spinner size="sm" /> : 'Cargar otros 15 usuarios'}
         </Button>
       </div>
 
       <Table bordered responsive hover>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>UID</th>
-            <th>Marca</th>
             <th>Nombre</th>
-            <th>Estilo</th>
-            <th>Lúpulo</th>
-            <th>Levadura</th>
-            <th>Maltas</th>
-            <th>IBU</th>
-            <th>Alcohol</th>
-            <th>Blg</th>
+            <th>Email</th>
+            <th>Username</th>
+            <th>Teléfono</th>
+            <th>Celular</th>
+            <th>Edad</th>
+            <th>País</th>
+            <th>Ciudad</th>
+            <th>Dirección</th>
+            <th>Foto</th>
           </tr>
         </thead>
         <tbody>
-          {cervezas.map((cerv, index) => (
+          {usuarios.map((user, index) => (
             <tr key={index}>
-              <td>{cerv.id}</td>
-              <td>{cerv.uid}</td>
-              <td>{cerv.brand}</td>
-              <td>{cerv.name}</td>
-              <td>{cerv.style}</td>
-              <td>{cerv.hop}</td>
-              <td>{cerv.yeast}</td>
-              <td>{cerv.malts}</td>
-              <td>{cerv.ibu}</td>
-              <td>{cerv.alcohol}</td>
-              <td>{cerv.blg}</td>
+              <td>{user.name.first} {user.name.last}</td>
+              <td>{user.email}</td>
+              <td>{user.login.username}</td>
+              <td>{user.phone}</td>
+              <td>{user.cell}</td>
+              <td>{user.dob.age}</td>
+              <td>{user.location.country}</td>
+              <td>{user.location.city}</td>
+              <td>{`${user.location.street.name} ${user.location.street.number}`}</td>
+              <td>
+                <img
+                  src={user.picture.thumbnail}
+                  alt="Foto"
+                  style={{ borderRadius: '50%' }}
+                />
+              </td>
             </tr>
           ))}
         </tbody>
@@ -75,4 +79,4 @@ const Cervesas = () => {
   );
 };
 
-export default Cervesas;
+export default Usuarios;
