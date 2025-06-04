@@ -17,12 +17,12 @@ const Consulta = () => {
   const fetchUser = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://random-data-api.com/api/v2/users');
+      const response = await fetch('https://randomuser.me/api/');
       if (!response.ok) {
         throw new Error('Error al obtener datos');
       }
       const data = await response.json();
-      setUser(data);
+      setUser(data.results[0]); 
     } catch (error) {
       console.error('Error:', error);
       setUser(null);
@@ -40,28 +40,27 @@ const Consulta = () => {
       {user && (
         <Card className="mt-4 mx-auto" style={{ maxWidth: '400px' }}>
           <CardHeader tag="h5">
-            {user.first_name} {user.last_name}
+            {user.name.first} {user.name.last}
           </CardHeader>
           <CardImg
             top
             width="100%"
-            src={user.avatar}
+            src={user.picture.large}
             alt="Avatar del usuario"
           />
           <CardBody>
-            <CardText><strong>Username:</strong> {user.username}</CardText>
+            <CardText><strong>Username:</strong> {user.login.username}</CardText>
             <CardText><strong>Email:</strong> {user.email}</CardText>
-            <CardText><strong>Teléfono:</strong> {user.phone_number}</CardText>
+            <CardText><strong>Teléfono:</strong> {user.phone}</CardText>
+            <CardText><strong>Celular:</strong> {user.cell}</CardText>
             <CardText><strong>Género:</strong> {user.gender}</CardText>
-            <CardText><strong>Ocupación:</strong> {user.employment.title}</CardText>
-            <CardText><strong>Habilidad clave:</strong> {user.employment.key_skill}</CardText>
-            <CardText><strong>Dirección:</strong> {user.address.street_address}, {user.address.city}, {user.address.state}, {user.address.country}</CardText>
-            <CardText><strong>Fecha de nacimiento:</strong> {user.date_of_birth}</CardText>
-            <CardText><strong>Número de seguro social:</strong> {user.social_insurance_number}</CardText>
-            <CardText><strong>Tarjeta de crédito:</strong> {user.credit_card.cc_number}</CardText>
+            <CardText><strong>Dirección:</strong> {user.location.street.name} {user.location.street.number}, {user.location.city}, {user.location.state}, {user.location.country}</CardText>
+            <CardText><strong>Fecha de nacimiento:</strong> {new Date(user.dob.date).toLocaleDateString()}</CardText>
+            <CardText><strong>Edad:</strong> {user.dob.age}</CardText>
+            <CardText><strong>Nacionalidad:</strong> {user.nat}</CardText>
           </CardBody>
           <CardFooter>
-            <strong>Plan:</strong> {user.subscription.plan} // <strong>Estado:</strong> {user.subscription.status}
+            <strong>Zona horaria:</strong> {user.location.timezone.description}
           </CardFooter>
         </Card>
       )}
